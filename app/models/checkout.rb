@@ -9,7 +9,8 @@ class Checkout
 
   def scan(item)
     @items << item
-    calculate_price
+    reset_total
+    calculate_price if rules.present?
   end
 
   private
@@ -18,8 +19,6 @@ class Checkout
   attr_writer :total
 
   def calculate_price
-    reset_total
-
     multi_buy_rules = rules.select(&:kind_multi_buy?)
     basket_total_rules = rules.select(&:kind_basket_total?)
 
