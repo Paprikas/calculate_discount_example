@@ -1,24 +1,9 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Solution for Cart discount calculation.
 
-Things you may want to cover:
+Chain of Responsibility Pattern like used.
 
-* Ruby version
+For sake of simplicity I'm using integer over decimal for prices and no users.
 
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+Ruby on Rails framework was chosen because of test framework integration by default and to show example close to real world application.
