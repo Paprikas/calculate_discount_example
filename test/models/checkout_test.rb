@@ -3,6 +3,7 @@ require 'test_helper'
 class CheckoutTest < ActiveSupport::TestCase
   def setup
     @item_a = items(:a)
+    @item_b = items(:b)
     @rule_a = Rule.new(item_name: "A", batch_size: 3, batch_price: 75)
   end
 
@@ -26,5 +27,14 @@ class CheckoutTest < ActiveSupport::TestCase
       co.scan(@item_a)
     end
     assert_equal(105, co.total)
+  end
+
+  test "should return 125 for four A items and one B item" do
+    co = Checkout.new([@rule_a])
+    4.times do
+      co.scan(@item_a)
+    end
+    co.scan(@item_b)
+    assert_equal(125, co.total)
   end
 end

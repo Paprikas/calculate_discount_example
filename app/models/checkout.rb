@@ -18,15 +18,12 @@ class Checkout
   attr_writer :total
 
   def calculate_price
-    return self.total = items.map(&:price).sum if rules.empty?
     reset_total
 
-    rules.each do |rule|
-      self.total += rule.calculate_price(items)
-    end
+    self.total -= rules.reduce(0) { |sum, rule| sum + rule.calculate_discount(items) }
   end
 
   def reset_total
-    self.total = 0
+    self.total = items.map(&:price).sum
   end
 end
