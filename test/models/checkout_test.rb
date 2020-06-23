@@ -22,7 +22,7 @@ class CheckoutTest < ActiveSupport::TestCase
     assert_equal(75, co.total)
   end
 
-  test "should return 105 for four A items" do
+  test "should return 105 for four A items (discount applied for each three)" do
     co = Checkout.new([@rule_a])
     4.times do
       co.scan(@item_a)
@@ -45,5 +45,13 @@ class CheckoutTest < ActiveSupport::TestCase
       co.scan(@item_b)
     end
     assert_equal(35, co.total)
+  end
+
+  test "should return 55 for three B items (discount applied for each two)" do
+    co = Checkout.new([@rule_b])
+    3.times do
+      co.scan(@item_b)
+    end
+    assert_equal(55, co.total)
   end
 end
