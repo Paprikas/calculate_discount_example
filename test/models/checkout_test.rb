@@ -5,6 +5,7 @@ class CheckoutTest < ActiveSupport::TestCase
     @item_a = items(:a)
     @item_b = items(:b)
     @rule_a = Rule.new(item_name: "A", batch_size: 3, batch_price: 75)
+    @rule_b = Rule.new(item_name: "B", batch_size: 2, batch_price: 35)
   end
 
   test "should scan item and return price without rules (30 for A item)" do
@@ -36,5 +37,13 @@ class CheckoutTest < ActiveSupport::TestCase
     end
     co.scan(@item_b)
     assert_equal(125, co.total)
+  end
+
+  test "should return 35 for two B items" do
+    co = Checkout.new([@rule_b])
+    2.times do
+      co.scan(@item_b)
+    end
+    assert_equal(35, co.total)
   end
 end
