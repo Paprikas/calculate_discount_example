@@ -7,3 +7,11 @@ a:
 b:
   name: B
   price: 20
+
+c:
+  name: C
+  price: 50
+
+d:
+  name: D
+  price: 15

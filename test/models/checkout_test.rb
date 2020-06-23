@@ -4,6 +4,8 @@ class CheckoutTest < ActiveSupport::TestCase
   def setup
     @item_a = items(:a)
     @item_b = items(:b)
+    @item_c = items(:c)
+    @item_d = items(:d)
     @rule_a = Rule.new(kind: :multi_buy, item_name: "A", batch_size: 3, batch_price: 75)
     @rule_b = Rule.new(kind: :multi_buy, item_name: "B", batch_size: 2, batch_price: 35)
     @rule_c = Rule.new(kind: :basket_total, basket_total_discount: 150, discount: 20)
@@ -62,5 +64,45 @@ class CheckoutTest < ActiveSupport::TestCase
       co.scan(@item_a)
     end
     assert_equal(160, co.total)
+  end
+
+  test "should return 100 for A B and C items" do
+    co = Checkout.new
+    co.scan(@item_a)
+    co.scan(@item_b)
+    co.scan(@item_c)
+    assert_equal(100, co.total)
+  end
+
+  test "should return 110 for B A B A A items" do
+    co = Checkout.new([@rule_a, @rule_b])
+    co.scan(@item_b)
+    co.scan(@item_a)
+    co.scan(@item_b)
+    co.scan(@item_a)
+    co.scan(@item_a)
+    assert_equal(110, co.total)
+  end
+
+  test "should return 155 for C B A A D A B items" do
+    co = Checkout.new([@rule_a, @rule_b, @rule_c])
+    co.scan(@item_c)
+    co.scan(@item_b)
+    co.scan(@item_a)
+    co.scan(@item_a)
+    co.scan(@item_d)
+    co.scan(@item_a)
+    co.scan(@item_b)
+    assert_equal(155, co.total)
+  end
+
+  test "should return 140 for C A D A A items" do
+    co = Checkout.new([@rule_a, @rule_b, @rule_c])
+    co.scan(@item_c)
+    co.scan(@item_a)
+    co.scan(@item_d)
+    co.scan(@item_a)
+    co.scan(@item_a)
+    assert_equal(140, co.total)
   end
 end
