@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class CheckoutTest < ActiveSupport::TestCase
-  test "should scan item and return price without rules" do
+  test "should scan item and return price without rules (30 for A item)" do
     item = items(:a)
     co = Checkout.new
     co.scan(item)
@@ -18,7 +18,7 @@ class CheckoutTest < ActiveSupport::TestCase
     assert_equal(75, co.total)
   end
 
-  test "should return 95 for four A items" do
+  test "should return 105 for four A items" do
     item = items(:a)
     rule = Rule.new(item_name: "A", batch_size: 3, batch_price: 75)
     co = Checkout.new([rule])
