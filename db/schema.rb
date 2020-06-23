@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_23_001300) do
+ActiveRecord::Schema.define(version: 2020_06_23_013909) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,6 +28,9 @@ ActiveRecord::Schema.define(version: 2020_06_23_001300) do
     t.integer "batch_price", default: 0, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "kind", default: 0, null: false
+    t.integer "basket_total_discount", default: 0, null: false
+    t.integer "discount", default: 0, null: false
   end
 
 end

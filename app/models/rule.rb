@@ -1,13 +1,26 @@
 class Rule < ApplicationRecord
-  def calculate_discount(items)
-    selected_items = items.select { |i| i.name == item_name }
-    return 0 if selected_items.empty?
+  enum kind: {
+    multi_buy: 0,
+    basket_total: 1
+  }, _prefix: true
 
-    batches = selected_items.size / batch_size
-    return 0 if batches.zero?
+  def calculate_discount(items: nil, total_price: nil)
+    case kind
+    when "multi_buy"
+      selected_items = items.select { |i| i.name == item_name }
+      return 0 if selected_items.empty?
+      batches = selected_items.size / batch_size
+      return 0 if batches.zero?
 
-    total_price = selected_items.first.price * batch_size
-    price_with_discount = batches * batch_price
-    total_price - price_with_discount
+      price = selected_items.first.price
+      total_price = price * selected_items.size
+      exceeded_batch_price = selected_items.size % batch_size * price
+      price_with_discount = batches * batch_price + exceeded_batch_price
+
+      total_price - price_with_discount
+    when "basket_total"
+      return discount if total_price > basket_total_discount
+      0
+    end
   end
 end

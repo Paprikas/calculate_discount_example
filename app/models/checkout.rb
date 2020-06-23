@@ -20,7 +20,11 @@ class Checkout
   def calculate_price
     reset_total
 
-    self.total -= rules.reduce(0) { |sum, rule| sum + rule.calculate_discount(items) }
+    multi_buy_rules = rules.select(&:kind_multi_buy?)
+    basket_total_rules = rules.select(&:kind_basket_total?)
+
+    self.total -= multi_buy_rules.reduce(0) { |sum, rule| sum + rule.calculate_discount(items: items) }
+    self.total -= basket_total_rules.reduce(0) { |sum, rule| sum + rule.calculate_discount(total_price: total) }
   end
 
   def reset_total
