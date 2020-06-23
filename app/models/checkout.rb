@@ -18,7 +18,8 @@ class Checkout
     if batches.zero?
       @total = @items.map(&:price).sum
     else
-      @total = batches * 75
+      rest_items = @items.size % 3
+      @total = batches * 75 + rest_items * 30
     end
   end
 end

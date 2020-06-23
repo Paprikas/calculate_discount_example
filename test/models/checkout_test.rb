@@ -16,4 +16,13 @@ class CheckoutTest < ActiveSupport::TestCase
     end
     assert_equal(75, co.total)
   end
+
+  test "should return 95 for four A items" do
+    item = items(:a)
+    co = Checkout.new
+    4.times do
+      co.scan(item)
+    end
+    assert_equal(105, co.total)
+  end
 end
