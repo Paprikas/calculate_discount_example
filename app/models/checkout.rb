@@ -14,24 +14,19 @@ class Checkout
 
   private
 
-  attr_reader :rules
+  attr_reader :rules, :items
+  attr_writer :total
 
   def calculate_price
-    return @total = @items.map(&:price).sum if rules.empty?
+    return self.total = items.map(&:price).sum if rules.empty?
+    reset_total
 
     rules.each do |rule|
-      selected_items = @items.select { |i| i.name == rule.item_name }
-      next if selected_items.empty?
-
-      item_price = selected_items.first.price
-
-      batches = selected_items.size / rule.batch_size
-      if batches.zero?
-        @total = selected_items.map(&:price).sum
-      else
-        rest_items = selected_items.size % rule.batch_size
-        @total = batches * rule.batch_price + rest_items * item_price
-      end
+      self.total += rule.calculate_price(items)
     end
+  end
+
+  def reset_total
+    self.total = 0
   end
 end
