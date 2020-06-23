@@ -4,6 +4,6 @@ one:
   name: MyString
   price: 10
 
-two:
-  name: MyString
-  price: 1
+a:
+  name: a
+  price: 30
